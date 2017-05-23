@@ -39,6 +39,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Future;
 
@@ -48,6 +49,7 @@ import net.imagej.display.ImageDisplay;
 import net.imagej.display.ImageDisplayService;
 import net.imagej.display.OverlayService;
 import net.imagej.legacy.command.LegacyCommand;
+import net.imagej.legacy.command.LegacyCommandFinder;
 import net.imagej.legacy.ui.LegacyUI;
 import net.imagej.patcher.LegacyEnvironment;
 import net.imagej.patcher.LegacyInjector;
@@ -486,6 +488,11 @@ public final class LegacyService extends AbstractService implements
 		}
 
 		ij1Helper.addMenuItems();
+
+		// discover ImageJ 1.x commands and register them with the module service.
+		final List<CommandInfo> ij1Commands = //
+			new LegacyCommandFinder(this).findCommands();
+		moduleService.addModules(ij1Commands);
 	}
 
 	// -- Disposable methods --
