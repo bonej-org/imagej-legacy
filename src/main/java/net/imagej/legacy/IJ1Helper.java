@@ -64,6 +64,7 @@ import java.awt.MenuBar;
 import java.awt.MenuItem;
 import java.awt.Panel;
 import java.awt.Window;
+import java.awt.event.KeyEvent;
 import java.awt.image.ImageProducer;
 import java.io.File;
 import java.io.IOException;
@@ -755,6 +756,11 @@ public class IJ1Helper extends AbstractContextual {
 		return Menus.getCommands();
 	}
 
+	@SuppressWarnings("unchecked")
+	public Hashtable<Integer, String> getShortcuts() {
+		return Menus.getShortcuts();
+	}
+
 	public MenuBar getMenuBar() {
 		final ImageJ ij1 = hasInstance() ? IJ.getInstance() : null;
 		return ij1 == null ? null : ij1.getMenuBar();
@@ -1304,6 +1310,7 @@ public class IJ1Helper extends AbstractContextual {
 
 		// disable the old Command Finder's shortcut
 		nullShortcut("Plugins", "Utilities", "Find Commands...");
+		getShortcuts().remove(KeyEvent.VK_L);
 	}
 
 	private void nullShortcut(final String menuLabel, final String subMenuLabel,
