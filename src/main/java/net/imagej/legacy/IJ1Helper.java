@@ -1301,6 +1301,32 @@ public class IJ1Helper extends AbstractContextual {
 		// add the search bar
 		searchBar = new SearchBar(getContext(), (Window) imagej);
 		panel.add(searchBar);
+
+		// disable the old Command Finder's shortcut
+		nullShortcut("Plugins", "Utilities", "Find Commands...");
+	}
+
+	private void nullShortcut(final String menuLabel, final String subMenuLabel,
+		final String itemLabel)
+	{
+		final MenuBar menuBar = getMenuBar();
+		for (int m = 0; m < menuBar.getMenuCount(); m++) {
+			final Menu menu = menuBar.getMenu(m);
+			if (!menuLabel.equals(menu.getLabel())) continue;
+			for (int s = 0; s < menu.getItemCount(); s++) {
+				final MenuItem ms = menu.getItem(s);
+				if (!(ms instanceof Menu)) continue;
+				final Menu subMenu = (Menu) ms;
+				if (!subMenuLabel.equals(subMenu.getLabel())) continue;
+				for (int i = 0; i < subMenu.getItemCount(); i++) {
+					final MenuItem mi = subMenu.getItem(i);
+					if (!itemLabel.equals(mi.getLabel())) continue;
+					subMenu.remove(i);
+					mi.setShortcut(null);
+					subMenu.insert(mi, i);
+				}
+			}
+		}
 	}
 
 	/** Closes all image windows on the event dispatch thread. */
